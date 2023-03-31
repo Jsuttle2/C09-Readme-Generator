@@ -55,6 +55,59 @@ function promptUser() {
     ]);
   }
 
+  
+  function generateReadme(answers) {
+    return `
+  # ${answers.title}
+  
+  ## Description
+  ${answers.description}
+  
+  ## Table of Contents
+  - [Installation](#installation)
+  - [Usage](#usage)
+  - [License](#license)
+  - [Contributing](#contributing)
+  - [Tests](#tests)
+  - [Questions](#questions)
+  
+  ## Installation
+  ${answers.installation}
+  
+  ## Usage
+  ${answers.usage}
+  
+  ## License
+  ${answers.license === 'None' ? 'This application has no license.' : `This application is covered under the ${answers.license} license.`}
+  
+  ## Contributing
+  ${answers.contributing}
+  
+  ## Tests
+  ${answers.tests}
+  
+  ## Questions
+  For additional questions or concerns, please contact ${answers.github} at ${answers.email}.
+  `;
+  }
+
+// TODO: Create a function to write README file
+const writeFile = util.promisify(fs.writeFile);
+
+// TODO: Create a function to initialize app
+async function init() {
+    try {
+      const answers = await promptUser();
+  
+      const readme = generateReadme(answers);
+  
+      await writeFile('README.md', readme);
+  
+      console.log('Successfully generated README.md file!');
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
 // Function call to initialize app
 init();
